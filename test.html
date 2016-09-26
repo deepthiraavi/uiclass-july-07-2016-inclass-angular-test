@@ -19,9 +19,10 @@
 
 <div ng-repeat="todo in todoList">
     <input type="checkbox" ng-model="todo.completed" > <span ng-bind="todo.subject"></span>
+    <button type="button" ng-click="delete(todo.id)">delete</button>
 </div>
 
-<p><button ng-click="remove(todo)">Remove marked</button></p>
+<!-- <p><button ng-click="remove(todo)">Remove marked</button></p> -->
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -87,25 +88,41 @@ app.controller('todoCtrl', function($scope,$http) {
   //   });
   // };
 
-  $scope.remove = function(todo) {
-    $http.delete('http://rest.learncode.academy/api/johnbob/r2-1', {
-        // params: {
-        //     data : subject ;
-        // }
+  // $scope.remove = function(todo) {
+  //   $http.delete('http://rest.learncode.academy/api/johnbob/r2-1', {
+  //       // params: {
+  //       //     data : subject ;
+  //       // }
       
-    }).success(function(todo) {
+  //   }).success(function(todo) {
 
-      var oldList = $scope.todoList;
+  //     var oldList = $scope.todoList;
+  //       $scope.todoList = [];
+  //       angular.forEach(oldList, function(todo) {
+  //           if (!todo.completed) $scope.todoList.push(todo);
+  //       });
+  //    // var index = $scope.todoList.indexOf(todo);
+  //    // $scope.todoList.splice(index, 1);
+  //   }).error(function(err) {
+  //     alert(err.message || "an error occurred");
+  //   });
+  // };
+
+
+
+$scope.delete = function(text) {
+     
+       $http.delete('http://rest.learncode.academy/api/johnbob/r2-1/'+ text)
+    .success().error(function(err) {
+      alert(err);
+     });
+     
+        var oldList= $scope.todoList;  
         $scope.todoList = [];
         angular.forEach(oldList, function(todo) {
-            if (!todo.completed) $scope.todoList.push(todo);
+           if (!todo.completed) $scope.todoList.push(todo);
         });
-     // var index = $scope.todoList.indexOf(todo);
-     // $scope.todoList.splice(index, 1);
-    }).error(function(err) {
-      alert(err.message || "an error occurred");
-    });
-  };
+    };
 
   
 
